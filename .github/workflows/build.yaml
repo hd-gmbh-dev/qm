@@ -7,12 +7,26 @@ on:
     branches:
       - main
   pull_request:
+    branches:
+      - main
+  workflow_dispatch:
 
 env:
   CARGO_TERM_COLOR: always
   SQLX_OFFLINE: true
 
 jobs:
+  docs:
+    name:  docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - id: pages
+        uses: actions/configure-pages@v3
+      - run:  cargo doc --no-deps --all-features
+      - uses: actions/upload-artifact@v2
+        with:
+          path: target/doc
   ci:
     runs-on: ubuntu-latest
     steps:
